@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
 
     private Vector3 screenBounds;
     private Vector3 lastPlatformPosition; // The position of the last spawned platform
+    private Vector3 firstPlatform; // The position of the first spawned platform
     private float originalPlatformWidth; // The original width of the platform
 
     public float velocityThreshold = 10f;
@@ -35,40 +36,27 @@ public class GameController : MonoBehaviour
         SpawnPlatforms();
     }
 
-    void Update()
-    {
+    void Update(){
         Vector3 playerPosition = player.transform.position;
 
         // If the player is close to the last platform, spawn new platforms
-        if (lastPlatformPosition.y - playerPosition.y < 2f) // Change 2f to whatever distance you want
-        {
+        if (lastPlatformPosition.y - playerPosition.y < -1f){
+            Debug.Log("Spawning platforms");
             SpawnPlatforms();
         }
 
+        if(Mathf.Abs(firstPlatform.y - playerPosition.y) > 50f){
+            Debug.Log("Removing platforms");
+            Debug.Log("First platform position: " + firstPlatform.y);
+            Debug.Log("Player position: " + playerPosition.y);
         // Remove platforms and pillars that are below the screen
-        for (int i = platforms.Count - 1; i >= 0; i--)
-        {
-            if (platforms[i].transform.position.y < player.transform.position.y - screenBounds.y)
-            {
-                Destroy(platforms[i]);
-                platforms.RemoveAt(i);
-            }
-        }
-
-        for (int i = pillars.Count - 1; i >= 0; i--)
-        {
-            if (pillars[i].transform.position.y < player.transform.position.y - screenBounds.y)
-            {
-                Destroy(pillars[i]);
-                pillars.RemoveAt(i);
-            }
+        removePlatforms();
         }
     }
 
 
 
-    private void SpawnBase()
-    {
+    private void SpawnBase(){
         // Spawn base platform
         GameObject basePlatform = Instantiate(platformPrefab, player.transform.position, Quaternion.identity);
         basePlatform.transform.localScale = new Vector3(originalPlatformWidth, basePlatform.transform.localScale.y, basePlatform.transform.localScale.z);
@@ -81,8 +69,7 @@ public class GameController : MonoBehaviour
         pillars.Add(rightPillar);
     }
 
-    private void SpawnPlatforms()
-    {
+    private void SpawnPlatforms(){
         // Determine the number of platforms to spawn
         int numPlatforms = Random.Range(3, 6);
 
@@ -91,6 +78,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < numPlatforms; i++)
         {
+
             // Determine the x position and width of the platform
             float xPos = Random.Range(-screenBounds.x, screenBounds.x);
             float width = Random.Range(0.1f, 1f);
@@ -104,7 +92,10 @@ public class GameController : MonoBehaviour
 
             // Update the last platform position
             lastPlatformPosition = platform.transform.position;
-
+            if(i == 0){
+                        Debug.Log("First platform position: " + firstPlatform.y);
+                        firstPlatform = platform.transform.position;
+                    }
             // Increase the y position for the next platform
             yPos += pillarHeight;
 
@@ -112,8 +103,36 @@ public class GameController : MonoBehaviour
             GameObject leftPillar = Instantiate(pillarPrefab, new Vector3(-screenBounds.x, yPos, 0), Quaternion.identity);
             GameObject rightPillar = Instantiate(pillarPrefab, new Vector3(screenBounds.x, yPos, 0), Quaternion.identity);
 
+
             pillars.Add(leftPillar);
             pillars.Add(rightPillar);
         }
     }
+
+
+    private void removePlatforms(){
+        // Get the bottom edge of the camera view
+        float cameraBottomEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.transform.position.z)).y;
+
+        // Remove platforms and pillars that are below the camera view
+        for (int i = platforms.Count - 1; i >= 0; i--)
+        {
+            if (platforms[i].transform.position.y < cameraBottomEdge)
+            {
+                Destroy(platforms[i]);
+                platforms.RemoveAt(i);
+            }
+        }
+
+        for (int i = pillars.Count - 1; i >= 0; i--)
+        {
+            if (pillars[i].transform.position.y < cameraBottomEdge)
+            {
+                Destroy(pillars[i]);
+                pillars.RemoveAt(i);
+            }
+        }
+    }
+
 }
+

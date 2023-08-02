@@ -153,11 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformPrefab: {fileID: 3466542139612130837, guid: 4c995e3d4e5b3ef4fab2edf580c3ba59, type: 3}
-  pillarPrefab: {fileID: 3466542139612130837, guid: 8e93cd1eb861d454f8f0500b22238b81, type: 3}
   player: {fileID: 1705741610}
-  spawnTriggerHeight: 5
-  spawnHeight: 15
+  pillarPrefab: {fileID: 3466542139612130837, guid: 8e93cd1eb861d454f8f0500b22238b81, type: 3}
   velocityThreshold: 10
+  pillarHeight: 25
 --- !u!4 &250671763
 Transform:
   m_ObjectHideFlags: 0
@@ -165,13 +164,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250671761}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.052302197, y: -4.046557, z: -0.031048693}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &372969554
 PrefabInstance:
@@ -182,9 +181,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 296969438464663824, guid: e488bc445e3d3cf4da3a2ac106e38a82, type: 3}
+      propertyPath: jumpForce
+      value: 30.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 296969438464663824, guid: e488bc445e3d3cf4da3a2ac106e38a82, type: 3}
       propertyPath: groundCheck
       value: 
       objectReference: {fileID: 2122836273}
+    - target: {fileID: 296969438464663824, guid: e488bc445e3d3cf4da3a2ac106e38a82, type: 3}
+      propertyPath: forceJumpLimit
+      value: 433.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1588857174231285831, guid: e488bc445e3d3cf4da3a2ac106e38a82, type: 3}
       propertyPath: m_Name
       value: Player
@@ -335,13 +342,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643367948}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.9699974, y: 13.710001, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &643367952
 MonoBehaviour:
@@ -388,3 +395,10 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4844724522055731644, guid: e488bc445e3d3cf4da3a2ac106e38a82, type: 3}
   m_PrefabInstance: {fileID: 372969554}
   m_PrefabAsset: {fileID: 0}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 643367951}
+  - {fileID: 372969554}
+  - {fileID: 250671763}
