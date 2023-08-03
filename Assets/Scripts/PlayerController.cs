@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController: MonoBehaviour {
     public float moveSpeed = 0.5f;
-    public float jumpForce = 45f;
+    public float jumpForce = 20f;
     public Transform groundCheck;
     public float groundCheckRadius;
     public string groundTag = "Platform";
@@ -20,7 +20,7 @@ public class PlayerController: MonoBehaviour {
 
     public float maxSpeed = 1700f;
     public float moveForce = 90f;
-    public float HorizontalJumpFactor = 250f;
+    public float HorizontalJumpFactor = 50f;
     public float forceJumpLimit = 1000f;
     public float bounceFactor = 2.00f;
 
