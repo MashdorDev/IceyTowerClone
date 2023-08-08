@@ -41,15 +41,10 @@ public class GameController : MonoBehaviour
 
         // If the player is close to the last platform, spawn new platforms
         if (lastPlatformPosition.y - playerPosition.y < -1f){
-            Debug.Log("Spawning platforms");
             SpawnPlatforms();
         }
 
         if(Mathf.Abs(firstPlatform.y - playerPosition.y) > 50f){
-            Debug.Log("Removing platforms");
-            Debug.Log("First platform position: " + firstPlatform.y);
-            Debug.Log("Player position: " + playerPosition.y);
-        // Remove platforms and pillars that are below the screen
         removePlatforms();
         }
     }
@@ -93,7 +88,6 @@ public class GameController : MonoBehaviour
             // Update the last platform position
             lastPlatformPosition = platform.transform.position;
             if(i == 0){
-                        Debug.Log("First platform position: " + firstPlatform.y);
                         firstPlatform = platform.transform.position;
                     }
             // Increase the y position for the next platform

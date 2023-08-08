@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController: MonoBehaviour {
-    public float moveSpeed = 0.5f;
-    public float jumpForce = 20f;
+    public Camera mainCamera;
     public Transform groundCheck;
-    public float groundCheckRadius;
-    public string groundTag = "Platform";
-    public float massDecreaseFactor = 0.5f;
-    public float pillarBounceAngle = 45f;
+
+    private float groundCheckRadius = 0;
+    private float gameOverThreshold = -15f;
+    private float moveSpeed = 0.5f;
+    private float jumpForce = 4.5f;
+    private string groundTag = "Platform";
+    private float massDecreaseFactor = 0.5f;
+    private float pillarBounceAngle = 45f;
 
     private bool isJumping = false;
     private Rigidbody2D rb;
@@ -18,13 +21,13 @@ public class PlayerController: MonoBehaviour {
     private float initialMass;
     private float previousSpeed;
 
-    public float maxSpeed = 1700f;
-    public float moveForce = 90f;
-    public float HorizontalJumpFactor = 50f;
-    public float forceJumpLimit = 1000f;
-    public float bounceFactor = 2.00f;
+    private float maxSpeed = 500f;
+    private float moveForce = 90f;
+    private float HorizontalJumpFactor = 50f;
+    private float forceJumpLimit = 500f;
+    private float bounceFactor = 2.00f;
 
-    public float spinTorque = 100f;
+    private float spinTorque = 100f;
 
     private Animator animator;
 
@@ -55,6 +58,16 @@ public class PlayerController: MonoBehaviour {
         }
 
         if(!isGrounded) animator.SetBool("IsJumping", true);
+
+        if(rb.velocity.magnitude > 0 ){
+            animator.SetBool("IsWalking", true);
+        } else {
+            animator.SetBool("IsWalking", false);
+        }
+
+        if (transform.position.y < mainCamera.transform.position.y + gameOverThreshold) {
+            GameOver();
+        }
 
     }
 
@@ -138,5 +151,10 @@ public class PlayerController: MonoBehaviour {
 
             }
         }
+    }
+
+    void GameOver() {
+        Debug.Log("Game Over");
+
     }
 }

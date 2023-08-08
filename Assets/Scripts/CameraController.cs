@@ -3,12 +3,22 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    public float smoothSpeed = 0.125f;
+    private float smoothSpeed = 0.125f;
     private Vector3 offset;
+
+    private int startGoing = 10 ;
+    private float cameraSpeed = 0.01f ;
+
+
 
     private void Start()
     {
         // offset = transform.position - player.transform.position;
+
+    }
+
+    private void Update(){
+        if (transform.position.y > startGoing) transform.position += new Vector3(0, cameraSpeed, 0);
 
     }
 
