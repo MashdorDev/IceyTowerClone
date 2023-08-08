@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 
 public class PlayerController: MonoBehaviour {
     public Camera mainCamera;
     public Transform groundCheck;
+
+    public int score = 0;
 
     private float groundCheckRadius = 0;
     private float gameOverThreshold = -15f;
@@ -148,6 +153,8 @@ public class PlayerController: MonoBehaviour {
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 animator.SetBool("IsJumping", false);
                 animator.SetBool("IsJumpingV", false);
+                score++;
+                Debug.Log("Score: " + score);
 
             }
         }
@@ -156,5 +163,10 @@ public class PlayerController: MonoBehaviour {
     void GameOver() {
         Debug.Log("Game Over");
 
+        #if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        #endif
+
+        Application.Quit();
     }
 }
