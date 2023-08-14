@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
+
 
 public class PlayerController: MonoBehaviour {
     public Camera mainCamera;
     public Transform groundCheck;
-
     public int score = 0;
+    public GameOverManager gameOverManager;
 
     private float groundCheckRadius = 0;
     private float gameOverThreshold = -15f;
@@ -41,6 +43,7 @@ public class PlayerController: MonoBehaviour {
         initialMass = rb.mass;
         previousSpeed = rb.velocity.magnitude;
 
+
         animator = GetComponent<Animator>();
     }
 
@@ -71,9 +74,8 @@ public class PlayerController: MonoBehaviour {
         }
 
         if (transform.position.y < mainCamera.transform.position.y + gameOverThreshold) {
-            GameOver();
+            gameOverManager.CheckForHighScore();
         }
-
     }
 
     private void FixedUpdate() {
@@ -132,15 +134,10 @@ public class PlayerController: MonoBehaviour {
         }
     }
 
-    private void Flip() {
-        facingRight = !facingRight;
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-    }
 
     private void OnCollisionEnter2D(Collision2D col) {
         if (col.gameObject.tag == "Pillar") {
+            Debug.Log("Pillar");
             Flip();
             Vector2 rev = new Vector2(rb.velocity.x * bounceFactor * Mathf.Cos(pillarBounceAngle * Mathf.Deg2Rad), rb.velocity.y * bounceFactor * Mathf.Sin(pillarBounceAngle * Mathf.Deg2Rad));
             rb.AddForce(rev, ForceMode2D.Impulse);
@@ -154,19 +151,15 @@ public class PlayerController: MonoBehaviour {
                 animator.SetBool("IsJumping", false);
                 animator.SetBool("IsJumpingV", false);
                 score++;
-                Debug.Log("Score: " + score);
-
             }
         }
     }
 
-    void GameOver() {
-        Debug.Log("Game Over");
-
-        #if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-        #endif
-
-        Application.Quit();
+    private void Flip() {
+        // Debug.Log("Flip");
+        facingRight = !facingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 }
