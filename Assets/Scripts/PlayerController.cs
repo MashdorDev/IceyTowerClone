@@ -73,6 +73,8 @@ public class PlayerController: MonoBehaviour {
 
         if (transform.position.y < mainCamera.transform.position.y + gameOverThreshold) {
             gameOverManager.CheckForHighScore();
+            //destory player
+            if(gameObject) Destroy(gameObject);
         }
     }
 
@@ -148,16 +150,11 @@ public class PlayerController: MonoBehaviour {
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 animator.SetBool("IsJumping", false);
                 animator.SetBool("IsJumpingV", false);
-
-                // // Increment the score using ScoreManager
-                // scoreManager.score++;
-                // scoreManager.UpdateScore();
             }
         }
     }
 
     private void Flip() {
-        // Debug.Log("Flip");
         facingRight = !facingRight;
         Vector3 scale = transform.localScale;
         scale.x *= -1;

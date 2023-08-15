@@ -16,8 +16,6 @@ public class MenuController : MonoBehaviour
         #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
         #endif
-
-
         Application.Quit();
     }
 }

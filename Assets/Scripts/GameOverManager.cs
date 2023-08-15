@@ -52,7 +52,7 @@ public class GameOverManager : MonoBehaviour{
 
         while (Vector2.Distance(scoreUIRectTransform.anchoredPosition, targetPosition) > 0.1f)
         {
-            distanceCovered = (Time.time - startTime) * 1000f; // 5f is the speed of the movement
+            distanceCovered = (Time.time - startTime) * 800f;
             fractionOfJourney = distanceCovered / journeyLength;
             scoreUIRectTransform.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, fractionOfJourney);
             yield return null;
