@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class MenuController : MonoBehaviour
 {
-    public void PlayGmae(){
+    public void PlayGame(){
      SceneManager.LoadScene("Game");
     }
 

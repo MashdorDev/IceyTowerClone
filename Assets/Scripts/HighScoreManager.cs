@@ -39,7 +39,6 @@ public class HighScoreManager : MonoBehaviour
             int highScore = PlayerPrefs.GetInt(HighScoreKey + i, 0);
             string highScoreName = PlayerPrefs.GetString(HighScoreNameKey + i, "Anonymous");
             scoreTexts[i].text = (i + 1) + ". " + highScoreName + ": " + highScore;
-            Debug.Log("Loaded High Score: " + highScoreName + " - " + highScore);
         }
     }
 

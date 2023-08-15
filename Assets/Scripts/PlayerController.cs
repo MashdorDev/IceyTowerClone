@@ -10,12 +10,11 @@ using UnityEditor;
 public class PlayerController: MonoBehaviour {
     public Camera mainCamera;
     public Transform groundCheck;
-    public int score = 0;
     public GameOverManager gameOverManager;
+    public ScoreManager scoreManager;
 
     private float groundCheckRadius = 0;
     private float gameOverThreshold = -15f;
-    private float moveSpeed = 0.5f;
     private float jumpForce = 4.5f;
     private string groundTag = "Platform";
     private float massDecreaseFactor = 0.5f;
@@ -31,7 +30,6 @@ public class PlayerController: MonoBehaviour {
     private float maxSpeed = 500f;
     private float moveForce = 90f;
     private float HorizontalJumpFactor = 50f;
-    private float forceJumpLimit = 500f;
     private float bounceFactor = 2.00f;
 
     private float spinTorque = 100f;
@@ -150,7 +148,10 @@ public class PlayerController: MonoBehaviour {
                 rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 animator.SetBool("IsJumping", false);
                 animator.SetBool("IsJumpingV", false);
-                score++;
+
+                // // Increment the score using ScoreManager
+                // scoreManager.score++;
+                // scoreManager.UpdateScore();
             }
         }
     }

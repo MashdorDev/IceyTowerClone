@@ -8,7 +8,6 @@ public class ScoreManager : MonoBehaviour{
 
     public TextMeshProUGUI scoreText;
 
-
     private void Start() {
         previousHeight = transform.position.y;
         UpdateScore();
@@ -26,7 +25,7 @@ public class ScoreManager : MonoBehaviour{
         }
     }
 
-    void UpdateScore(){
+    public void UpdateScore(){
      if(scoreText != null) scoreText.text = "Score: " + score.ToString();
     }
 }
