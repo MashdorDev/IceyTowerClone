@@ -12,8 +12,14 @@ public class PlayerController: MonoBehaviour {
     public Transform groundCheck;
     public GameOverManager gameOverManager;
     public ScoreManager scoreManager;
+    public AudioSource audioSource;
+    public AudioClip jumpSound;
+    public AudioClip deathSound;
+    public AudioClip footstepSound;
 
-    private float groundCheckRadius = 0;
+
+
+    private float groundCheckRadius = 0.1f;
     private float gameOverThreshold = -15f;
     private float jumpForce = 4.5f;
     private string groundTag = "Platform";
@@ -31,18 +37,19 @@ public class PlayerController: MonoBehaviour {
     private float moveForce = 90f;
     private float HorizontalJumpFactor = 50f;
     private float bounceFactor = 2.00f;
-
     private float spinTorque = 100f;
-
     private Animator animator;
+
+
+
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         initialMass = rb.mass;
         previousSpeed = rb.velocity.magnitude;
 
-
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update() {
@@ -60,23 +67,35 @@ public class PlayerController: MonoBehaviour {
             rb.AddTorque(spinTorque);
             isJumping = true;
             isGrounded = false;
+            audioSource.PlayOneShot(jumpSound, 0.5f);
             animator.SetBool("IsJumping", true);
         }
 
         if(!isGrounded) animator.SetBool("IsJumping", true);
 
-        if(rb.velocity.magnitude > 0 ){
+        if(rb.velocity.magnitude > 0.1 && isGrounded){
+
             animator.SetBool("IsWalking", true);
         } else {
             animator.SetBool("IsWalking", false);
         }
 
+        if(rb.velocity.magnitude > 0.1 && isGrounded && !isPlayingFootstep ) StartCoroutine(PlayFootstepSound());
+
         if (transform.position.y < mainCamera.transform.position.y + gameOverThreshold) {
+            //game over
+            audioSource.PlayOneShot(deathSound, 0.1f);
             gameOverManager.CheckForHighScore();
             //destory player
-            if(gameObject) Destroy(gameObject);
+            StartCoroutine(ExecuteAfterDelay(2.5f));
         }
     }
+
+    IEnumerator ExecuteAfterDelay(float seconds){
+        yield return new WaitForSeconds(seconds);
+        if(gameObject) Destroy(gameObject);
+    }
+
 
     private void FixedUpdate() {
         float h = Input.GetAxis("Horizontal");
@@ -160,4 +179,14 @@ public class PlayerController: MonoBehaviour {
         scale.x *= -1;
         transform.localScale = scale;
     }
+
+    private bool isPlayingFootstep = false;
+
+    IEnumerator PlayFootstepSound() {
+        isPlayingFootstep = true;
+        audioSource.PlayOneShot(footstepSound, 0.5f);
+        yield return new WaitForSeconds(0.3f); // Adjust this value for the desired footstep frequency
+        isPlayingFootstep = false;
+    }
+
 }
