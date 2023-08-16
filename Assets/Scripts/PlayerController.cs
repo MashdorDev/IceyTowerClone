@@ -17,8 +17,6 @@ public class PlayerController: MonoBehaviour {
     public AudioClip deathSound;
     public AudioClip footstepSound;
 
-
-
     private float groundCheckRadius = 0.1f;
     private float gameOverThreshold = -15f;
     private float jumpForce = 4.5f;
@@ -39,9 +37,6 @@ public class PlayerController: MonoBehaviour {
     private float bounceFactor = 2.00f;
     private float spinTorque = 100f;
     private Animator animator;
-
-
-
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -185,7 +180,7 @@ public class PlayerController: MonoBehaviour {
     IEnumerator PlayFootstepSound() {
         isPlayingFootstep = true;
         audioSource.PlayOneShot(footstepSound, 0.5f);
-        yield return new WaitForSeconds(0.3f); // Adjust this value for the desired footstep frequency
+        yield return new WaitForSeconds(0.3f);
         isPlayingFootstep = false;
     }
 

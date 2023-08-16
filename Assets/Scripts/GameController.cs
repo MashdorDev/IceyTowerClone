@@ -54,56 +54,58 @@ public class GameController : MonoBehaviour
 
 
     private void SpawnBase(){
-        GameObject basePlatform = Instantiate(platformPrefab, player.transform.position, Quaternion.identity);
+        GameObject basePlatform = Instantiate(platformPrefab, new Vector3(player.transform.position.x, player.transform.position.y, -1), Quaternion.identity);
         basePlatform.transform.localScale = new Vector3(originalPlatformWidth, basePlatform.transform.localScale.y, basePlatform.transform.localScale.z);
 
-        GameObject leftPillar = Instantiate(pillarPrefab, new Vector3(-screenBounds.x, player.transform.position.y, 0), Quaternion.identity);
-        GameObject rightPillar = Instantiate(pillarPrefab, new Vector3(screenBounds.x, player.transform.position.y, 0), Quaternion.identity);
+        GameObject leftPillar = Instantiate(pillarPrefab, new Vector3(-screenBounds.x, player.transform.position.y, 1), Quaternion.identity);
+        GameObject rightPillar = Instantiate(pillarPrefab, new Vector3(screenBounds.x, player.transform.position.y, 1), Quaternion.identity);
+
+        leftPillar.transform.localScale = new Vector3(leftPillar.transform.localScale.x, 3, leftPillar.transform.localScale.z);
+        rightPillar.transform.localScale = new Vector3(rightPillar.transform.localScale.x, 3, rightPillar.transform.localScale.z);
 
         pillars.Add(leftPillar);
         pillars.Add(rightPillar);
 
         GameObject background = Instantiate(backgroundPrefab, new Vector3(0, player.transform.position.y + 9, 10), Quaternion.identity);
-        float backgroundWidth = backgroundPrefab.GetComponent<Renderer>().bounds.size.x;
-        float backgroundHeight = backgroundPrefab.GetComponent<Renderer>().bounds.size.y;
         backgrounds.Add(background);
-
     }
 
     private void SpawnPlatforms(){
         int numPlatforms = Random.Range(3, 6);
-
         float yPos = Mathf.Max(player.transform.position.y + screenBounds.y, lastPlatformPosition.y + pillarHeight);
 
         for (int i = 0; i < numPlatforms; i++)
         {
-            float xPos = Random.Range(-screenBounds.x, screenBounds.x);
             float width = Random.Range(0.1f, 1f);
+            float halfPlatformWidth = width * originalPlatformWidth / 2;
 
-            GameObject platform = Instantiate(platformPrefab, new Vector3(xPos, yPos, 0), Quaternion.identity);
+            float xPos = Random.Range(-screenBounds.x + halfPlatformWidth, screenBounds.x - halfPlatformWidth);
+
+            GameObject platform = Instantiate(platformPrefab, new Vector3(xPos, yPos, -1), Quaternion.identity);
             platform.transform.localScale = new Vector3(width, platform.transform.localScale.y, platform.transform.localScale.z);
 
             platforms.Add(platform);
-
             lastPlatformPosition = platform.transform.position;
-            if(i == 0){
+            if (i == 0)
+            {
                 firstPlatform = platform.transform.position;
             }
 
-            yPos += pillarHeight;
+            yPos += platform.GetComponent<Renderer>().bounds.size.y;
 
-            GameObject background = Instantiate(backgroundPrefab, new Vector3(0, yPos, 10), Quaternion.identity);
-            float backgroundWidth = backgroundPrefab.GetComponent<Renderer>().bounds.size.x;
-            float backgroundHeight = backgroundPrefab.GetComponent<Renderer>().bounds.size.y;
-            backgrounds.Add(background);
-
-            GameObject leftPillar = Instantiate(pillarPrefab, new Vector3(-screenBounds.x, yPos, 0), Quaternion.identity);
-            GameObject rightPillar = Instantiate(pillarPrefab, new Vector3(screenBounds.x, yPos, 0), Quaternion.identity);
+            GameObject leftPillar = Instantiate(pillarPrefab, new Vector3(-screenBounds.x, yPos + pillarHeight / 2, 1), Quaternion.identity);
+            GameObject rightPillar = Instantiate(pillarPrefab, new Vector3(screenBounds.x, yPos + pillarHeight / 2, 1), Quaternion.identity);
 
             pillars.Add(leftPillar);
             pillars.Add(rightPillar);
+
+            GameObject background = Instantiate(backgroundPrefab, new Vector3(0, yPos, 10), Quaternion.identity);
+            backgrounds.Add(background);
+
+            yPos += pillarHeight;
         }
     }
+
 
 
 
@@ -111,7 +113,7 @@ public class GameController : MonoBehaviour
         float cameraBottomEdge = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Camera.main.transform.position.z)).y;
 
         for (int i = platforms.Count - 1; i >= 0; i--){
-            if (platforms[i].transform.position.y < cameraBottomEdge)
+            if (platforms[i].transform.position.y < cameraBottomEdge - 4 )
             {
                 Destroy(platforms[i]);
                 platforms.RemoveAt(i);
@@ -119,7 +121,7 @@ public class GameController : MonoBehaviour
         }
 
         for (int i = pillars.Count - 1; i >= 0; i--){
-            if (pillars[i].transform.position.y < cameraBottomEdge)
+            if (pillars[i].transform.position.y < cameraBottomEdge - 4 )
             {
                 Destroy(pillars[i]);
                 pillars.RemoveAt(i);
@@ -127,7 +129,7 @@ public class GameController : MonoBehaviour
         }
 
         for (int i = backgrounds.Count - 1; i >= 0; i--){
-            if (backgrounds[i].transform.position.y < cameraBottomEdge)
+            if (backgrounds[i].transform.position.y < cameraBottomEdge - 4)
             {
                 Destroy(backgrounds[i]);
                 backgrounds.RemoveAt(i);

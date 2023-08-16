@@ -28,20 +28,10 @@ public class GameOverManager : MonoBehaviour{
     void Update(){
         if (isWaitingForKeyPress && Input.anyKeyDown){
             isWaitingForKeyPress = false;
-            StopCoroutine(FlashText(returnPromptText, 100f));
             returnPromptText.enabled = true;
             LoadMainMenu();
         }
     }
-
-    private IEnumerator FlashText(TextMeshProUGUI text, float interval){
-        while (true)
-        {
-            text.enabled = !text.enabled;
-            yield return new WaitForSeconds(interval);
-        }
-    }
-
 
     private IEnumerator MoveToCenter(){
         Vector2 startPosition = scoreUIRectTransform.anchoredPosition;
@@ -78,7 +68,6 @@ public class GameOverManager : MonoBehaviour{
         } else {
             notHighScoreText.gameObject.SetActive(true);
             returnPromptText.gameObject.SetActive(true);
-            StartCoroutine(FlashText(returnPromptText, 10f));
             isWaitingForKeyPress = true;
         }
     }
