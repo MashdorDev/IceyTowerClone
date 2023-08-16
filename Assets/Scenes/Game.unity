@@ -807,9 +807,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sumbit
-
-'
+  m_text: Submit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ceac790ba1a7bcc4bafe3d7018354c46, type: 2}
   m_sharedMaterial: {fileID: 2980239237398446382, guid: ceac790ba1a7bcc4bafe3d7018354c46, type: 2}
